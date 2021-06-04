@@ -1,5 +1,5 @@
 const question = document.getElementById('question');
-const  choices = Array.from(document.getElementsByClassName('choice-text'));
+const choices = Array.from(document.getElementsByClassName('choice-text'));
 const progressText = document.getElementById('progressText');
 const scoreText = document.getElementById('score');
 const progressBarFull = document.getElementById('progressBarFull');
@@ -11,6 +11,27 @@ let score = 0;
 let	questionCounter = 0;
 let availableQuestions = [];
 let questions = [];
+
+function decodeHTMLEntities(text) {
+    const entities = [
+        ['amp', '&'],
+        ['apos', '\''],
+        ['#x27', '\''],
+        ['#x2F', '/'],
+        ['#039', '\''],
+        ['#47', '/'],
+        ['lt', '<'],
+        ['gt', '>'],
+        ['nbsp', ' '],
+        ['quot', '"']
+    ];
+
+    for (let i = 0, max = entities.length; i < max; ++i) {
+        text = text.replace(new RegExp('&'+entities[i][0]+';', 'g'), entities[i][1]);
+	}
+    return text;
+}
+
 
 fetch('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple')
 	.then(res => {
@@ -37,7 +58,7 @@ fetch('https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=mul
 
 // constants
 const correctBonus = 10;
-const maxQuestions = 3,
+const maxQuestions = 10,
 
 startGame = () => {
 	questionCounter = 0;
@@ -55,18 +76,15 @@ getNewQuestion = () => {
 		return window.location.assign('end.html');
 	}
 	questionCounter++;
-	//questionCounterText.innerText = `${questionCounter}/${maxQuestions}`;
 	progressText.innerText = `Question ${questionCounter}/${maxQuestions}`;
-	//update the progress bar
 	progressBarFull.style.width = `${(questionCounter / maxQuestions) * 100}%`;
 	
 	const questionIndex = Math.floor(Math.random() * availableQuestions.length);
 	currentQuestion = availableQuestions[questionIndex];
-	question.innerText = currentQuestion.question;
-	
+	question.innerText =  decodeHTMLEntities(currentQuestion.question);
 	choices.forEach(choice => {
 		const number = choice.dataset.number;
-		choice.innerText = currentQuestion['choice' + number];
+		choice.innerText = decodeHTMLEntities(currentQuestion['choice' + number]);
 	});
 	
 	availableQuestions.splice(questionIndex, 1);
