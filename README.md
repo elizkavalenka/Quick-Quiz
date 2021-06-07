@@ -1,4 +1,4 @@
-# quickQuize
+# Quick Quize
 Quiz written in JavaScript.
 
 Questions are generated automatically from the Trivia API. 
