@@ -1,7 +1,7 @@
-# Quick Quize
-Quiz written in JavaScript.
+# Quick Quiz
+Quiz is written in JavaScript.
 
-Questions are generated automatically from the Trivia API. 
+Quick Quiz is a small 10-question quiz. Questions on general topics generated using Trivia API.
 
 ![Screenshot](ScreenQuize.png)
 
